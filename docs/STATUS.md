@@ -332,3 +332,8 @@ PDF2ZH_MOCK=1 .venv/bin/python -m uvicorn server.main:app --reload --port 8000
 - 验证：本机 Python 3.12.13 后端 63 项测试通过（1 项现有依赖弃用警告）；Node.js 22.23.3 / npm 10.9.9 下 npm ci 与静态生产构建通过；actionlint 1.7.12 与 git diff --check 通过。GitHub 仓库 Actions 已启用；云端结果待推送后追加。
 - 没做完 / 已知问题：本次没有 macOS 云端打包、签名、公证或发布，也未改分支保护。npm ci 报告现有依赖 9 项漏洞（2 moderate、6 high、1 critical），包含 Next.js 14.2.15 的升级提示；本次未扩大范围升级依赖。
 - 下一个接手的人先看：`.github/workflows/ci.yml` 和 docs/development.md 的 GitHub Actions 小节；默认分支仍为 agent/codex/translator-core，不直接改 main、不强推。
+
+### GitHub 推送结果
+
+- CI 配置已提交为 `a764512`，但 GitHub 拒绝普通推送：当前 OAuth 凭证没有 `workflow` scope，不允许创建 `.github/workflows/ci.yml`。远端没有本次 workflow，首次云端运行尚未发生。
+- 需用户在终端运行 `gh auth refresh -h github.com -s workflow` 并完成 GitHub 授权，再执行 `git push origin HEAD:agent/codex/translator-core`；随后查看 `gh run list --workflow ci.yml`。本次没有改变凭证权限或改用其他方式绕过拒绝。
