@@ -1,0 +1,37 @@
+# User documents, job database and local release outputs
+pdf2zh_files/
+logs/
+config/user.json
+.env
+.env.*
+!.env.example
+
+# Python dependencies and generated caches
+.venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Frontend dependencies and build outputs
+web/node_modules/
+web/.next/
+web/out/
+
+# Standalone runtimes, models and distribution bundles
+*.app/
+*.zip
+*.dmg
+*.onnx
+*.exe
+*.dll
+*.pyd
+*.so
+*.dylib
+
+# Local tools and operating system files
+.jj/
+.superpowers/
+.DS_Store
+*.log

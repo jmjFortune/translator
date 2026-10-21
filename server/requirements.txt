@@ -1,0 +1,10 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+pydantic>=2.7
+# Real translation requires Python 3.11-3.13; mock mode keeps lazy imports.
+pdf2zh-next==2.9.0
+# BabelDOC 0.6 still imports BitStream, removed in bitstring 5.
+bitstring>=4.3,<5
+# pdf2zh-next config imports this directly; do not rely on its Gradio dependency.
+tomlkit>=0.12,<0.14
