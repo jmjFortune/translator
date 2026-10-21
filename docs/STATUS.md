@@ -337,3 +337,11 @@ PDF2ZH_MOCK=1 .venv/bin/python -m uvicorn server.main:app --reload --port 8000
 
 - CI 配置已提交为 `a764512`，但 GitHub 拒绝普通推送：当前 OAuth 凭证没有 `workflow` scope，不允许创建 `.github/workflows/ci.yml`。远端没有本次 workflow，首次云端运行尚未发生。
 - 需用户在终端运行 `gh auth refresh -h github.com -s workflow` 并完成 GitHub 授权，再执行 `git push origin HEAD:agent/codex/translator-core`；随后查看 `gh run list --workflow ci.yml`。本次没有改变凭证权限或改用其他方式绕过拒绝。
+
+## 2026-10-21 Codex（CI 已推送并完成云端验证）
+
+- 做了什么：恢复推送后发现当前凭证仍缺少 workflow scope；发起设备授权刷新，由用户完成 GitHub 网页确认后，核实权限生效并普通快进推送至 agent/codex/translator-core。
+- 改了哪些文件：本次仅追加本交接记录；CI 配置已随 a764512/b3af321 推送，没有新增 API 或业务代码变更。
+- 验证：首次 push 触发的 [CI #39614815912](https://github.com/jmjFortune/translator/actions/runs/39614815912) 在 Ubuntu 24.04 全部成功；Python 3.12 后端 63 项测试通过、1 项现有依赖弃用警告（测试 10.43 秒，job 1 分 7 秒）；Node.js 22 前端按 lock 安装并静态构建通过（job 26 秒）。两项包下载缓存已写入。
+- 没做完 / 已知问题：CI 已可用；未配置 macOS 云端打包、发布或分支保护。现有依赖漏洞、Apple 公证及其他产品边界仍见此前记录。
+- 下一个接手的人先看：`.github/workflows/ci.yml`、docs/development.md；后续 push/PR 自动运行 Backend tests 与 Frontend build，失败到仓库 Actions 查看日志。
