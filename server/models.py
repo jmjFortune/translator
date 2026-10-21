@@ -7,7 +7,6 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 JobStatus = Literal["queued", "running", "done", "error", "cancelled"]
-EventType = Literal["status", "progress", "done", "error", "cancelled"]
 
 
 class Progress(BaseModel):
@@ -28,16 +27,6 @@ class JobOut(BaseModel):
     options: dict[str, Any] = Field(default_factory=dict)
     created_at: str
     finished_at: str | None = None
-
-
-class JobEvent(BaseModel):
-    seq: int
-    type: EventType
-    job_id: str
-    current: int | None = None
-    total: int | None = None
-    message: str | None = None
-    data: dict[str, Any] | None = None
 
 
 class ServiceOut(BaseModel):

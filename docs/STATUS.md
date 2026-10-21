@@ -307,3 +307,13 @@ PDF2ZH_MOCK=1 .venv/bin/python -m uvicorn server.main:app --reload --port 8000
 - 验证：后端 63 项测试通过；前端静态生产构建通过；Swift 脚本类型检查与隔离图标导出通过；实际后端打包复制与缓存阻断通过；当前插件源码与 XPI 内容一致，活动 Markdown 本地链接检查通过。
 - 没做完 / 已知问题：即将以精简后的独立初始快照推送空 GitHub 仓库，历史中的旧遮罩凭证和删除的旧大文件不进入该快照。旧历史保留在本地，不强推；不会推送用户数据或 App ZIP。Zotero 新版自动回写仍未联调；App 本地签名未公证等既有边界不变。
 - 下一个接手的人先看：README、docs/development.md、docs/macos.md 和 D-031；本地清理计划/归档清单位于被忽略的 pdf2zh_files/project-cleanup。
+
+
+## 2026-10-21 Codex（源码与依赖精简，GitHub 已建立）
+
+- 做了什么：初始核心源码快照 7b1ddd9 已成功推送并在 GitHub 核对，远端分支为 agent/codex/translator-core；仅当前源码进入该历史。继续按用户要求精简当前代码，保留翻译/取消/SSE、三种格式、历史、真实 PDF、配置、术语库及 Zotero 下载。
+- 改了哪些文件：web/package.json 与 lock 删除 4 个未使用直接依赖和 2 个独占间接依赖，保留依赖的已解析版本不变；globals.css/Tailwind 仅清理无引用或无效定义。GlossaryManager 从 184 行缩到 53 行，清除旧 Qt 文件导入导出/替换方法及不可达预设词条，仅保留 API 使用的名称；删除未使用的事件模型、段落写入助手、无效参数、导入与重复 server/run.py，开发启动统一 uvicorn。同步 development、D-032 和本文件。
+- 验证：后端 63 项测试通过；Next.js 静态生产构建通过；npm ci 锁文件预检通过。按与契约导出相同的 API-only 条件逐字段比较，全部 14 个 OpenAPI 路径和 schema 一致；静态挂载模式仅隐藏原有根路径提示接口。生成样式的 AST 排除已核实无用的声明后完全相同，前端组件和交互代码未改。
+- 清理结果：当前入库文件 76 个（最初 177 个），约 4.3 MB（最初约 25.2 MB）；本轮删除约 300 行冗余内容。缓存、虚拟环境、用户数据、模型和构建产物不入库；旧资源仍可从归档恢复，已有配置/历史不动。OpenCV 继续保留 5.0.0.93。
+- 没做完 / 已知问题：本轮为源码/开发依赖清理，已安装 App 和分发 ZIP 未重建，体积仍以上次构建报告为准。段落对照、Zotero 新版回写、Apple 公证等既有边界见 development/macos；没有新增 API 或功能。
+- 下一个接手的人先看：README、docs/development.md、docs/macos.md、D-031/D-032；后续源码继续在 agent/codex/translator-core 普通快进提交/推送，不推 main、不强推。

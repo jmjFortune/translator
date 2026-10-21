@@ -11,7 +11,7 @@
 
 server/api 提供配置、术语库、任务和文献 API；server/jobs.py 管理线程队列、取消与 SSE 事件；server/db.py 持久化任务；server/services/next_engine.py 适配 pdf2zh-next 的配置和服务商。翻译运行调用 `pdf2zh_next.high_level.do_translate_async_stream()`，沿用上游独立翻译子进程。旧 pdf2zh/Qt 内核不作为回退。
 
-后端只保留两个 ui 兼容模块：UserConfigManager 读写现有配置，GlossaryManager 读写术语库及预置词表。保留模块名和用户目录，避免升级丢失已有设置。
+后端只保留两个 ui 兼容模块：UserConfigManager 读写现有配置，GlossaryManager 读写术语库并提供预设名称。保留模块名和用户目录，避免升级丢失已有设置。
 
 前端使用 fetch 与 SSE；服务字段以 [docs/openapi.json](openapi.json) 为准。新增或变更接口后运行 `.venv312/bin/python scripts/export_openapi.py` 并提交契约。
 

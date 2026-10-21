@@ -73,7 +73,7 @@ def _job_row(row: sqlite3.Row) -> dict[str, Any]:
     }
 
 
-def save_job(job: dict[str, Any], *, status: bool = True) -> None:
+def save_job(job: dict[str, Any]) -> None:
     with _connect() as conn:
         conn.execute(
             """
@@ -144,27 +144,6 @@ def mark_interrupted() -> None:
             "UPDATE jobs SET status='error', error=?, finished_at=? "
             "WHERE status IN ('queued', 'running')",
             ("服务重启，任务已中断", datetime.now().isoformat(timespec="seconds")),
-        )
-
-
-def replace_paragraphs(job_id: str, rows: list[dict[str, Any]]) -> None:
-    with _connect() as conn:
-        conn.execute("DELETE FROM paragraphs WHERE job_id = ?", (job_id,))
-        conn.executemany(
-            "INSERT INTO paragraphs (job_id, page, seq, bbox, source, translated, latex) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [
-                (
-                    job_id,
-                    row["page"],
-                    row["seq"],
-                    json.dumps(row["bbox"]) if row.get("bbox") else None,
-                    row.get("source", ""),
-                    row.get("translated", ""),
-                    row.get("latex"),
-                )
-                for row in rows
-            ],
         )
 
 

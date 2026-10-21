@@ -217,3 +217,11 @@
 - 后端仍依赖的 ui/config_manager.py、glossary_manager.py 保留兼容包名与 ~/.config/pdf2zh 路径；仅移除零调用的旧游戏/历史管理代码和导入。AGENTS.md 本身不改，DECISIONS/STATUS 历史保留；根说明改为当前产品使用方式，并保留上游归属。
 - 当前 Qt/Windows 资产不再由导出脚本重新生成；当前插件源码移到 integrations/zotero，下载 URL 不变。用户数据、pdf2zh_files、已安装 App、Git/Jujutsu 元数据、开发环境和依赖均不作为旧代码删除。
 - 推送策略：目标为空仓库时，推送清理后的独立初始源码快照到 agent/codex/translator-core 分支；完整旧提交和清理提交保留在本地分支，不重写或强推远端，不直接提交 main。如此避免将已删除旧资产和历史遮罩凭证字面量一并上传。只推源码，不自动发布二进制 Release。
+
+
+### D-032 · 2026-10-21 · Simplify the retained source and dependencies
+- 用户进一步要求对项目、代码和文件精简。允许在 D-031 基础上跨目录清理经当前调用关系核实的死代码、未使用依赖及无效样式；前端布局、视觉与交互保持验收基线，HTTP/SSE 契约不变。
+- 前端移除未导入的 canvas-confetti、clsx、framer-motion、tailwind-merge 及其独占间接依赖；清理无引用的 Tailwind 色值/阴影和 CSS 声明，保留实际使用的颜色、字体、纹理与滚动条。
+- 后端仅保留当前术语库 API 使用的读取、保存、预设名称、添加和删除操作；移除旧 Qt 端专用的 CSV/JSON 文件导入导出、预设加载、自定义扫描、字符串替换等零调用方法。当前 API 整库替换和翻译术语传递继续保留。
+- 移除未使用的 JobEvent/EventType、数据库段落写入助手与空置参数、无引用导入，以及重复的 server/run.py 启动入口；统一使用文档中的 python -m uvicorn。保留段落读取/API/数据表与测试，不删除既有数据。
+- OpenCV 5.0.0.93、所有实际使用的翻译服务商与 App 构建流程保持；本轮精简源码和开发依赖，不把源码缩减声称为已安装 App 体积缩减。继续普通提交/推送 agent/codex/translator-core，不改写历史或 main。
