@@ -46,3 +46,14 @@ PDF2ZH_STATIC_EXPORT=1 npm run build
 ```
 
 依赖、测试缓存、web/.next、node_modules、web/out 和 App/ZIP 都可重建，不进入源码提交。Windows 启动/构建支持已从当前核心项目移除。
+
+## GitHub Actions
+
+[CI workflow](../.github/workflows/ci.yml) 在每次分支推送、PR 创建/更新时并行执行：
+
+- `Backend tests`：Ubuntu / Python 3.12，安装 `server/requirements-dev.txt`，以 `PDF2ZH_MOCK=1` 执行全部后端测试。真实引擎适配测试仍安装引擎依赖，翻译流使用 stub；不需要用户 API Key，也不预热模型或字体。
+- `Frontend build`：Ubuntu / Node.js 22，在 `web` 中执行 `npm ci` 和 `PDF2ZH_STATIC_EXPORT=1 npm run build`。
+
+到仓库的 Actions 页面查看日志；工作流进入默认分支后，也可选择 CI → Run workflow 手动运行。同一分支或 PR 的旧运行会被新提交取消，每个任务最多运行 20 分钟。仅缓存 pip/npm 下载，不上传产物。
+
+本工作流不构建 macOS App、不签名/公证、不发布或部署，也不自动合并。需要阻止检查失败的 PR 合并时，由仓库管理员将这两个检查加入目标分支的保护规则。

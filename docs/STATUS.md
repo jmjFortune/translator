@@ -317,3 +317,18 @@ PDF2ZH_MOCK=1 .venv/bin/python -m uvicorn server.main:app --reload --port 8000
 - 清理结果：当前入库文件 76 个（最初 177 个），约 4.3 MB（最初约 25.2 MB）；本轮删除约 300 行冗余内容。缓存、虚拟环境、用户数据、模型和构建产物不入库；旧资源仍可从归档恢复，已有配置/历史不动。OpenCV 继续保留 5.0.0.93。
 - 没做完 / 已知问题：本轮为源码/开发依赖清理，已安装 App 和分发 ZIP 未重建，体积仍以上次构建报告为准。段落对照、Zotero 新版回写、Apple 公证等既有边界见 development/macos；没有新增 API 或功能。
 - 下一个接手的人先看：README、docs/development.md、docs/macos.md、D-031/D-032；后续源码继续在 agent/codex/translator-core 普通快进提交/推送，不推 main、不强推。
+
+## 2026-10-21 Codex（GitHub Actions 适用性评估）
+
+- 做了什么：检查现有测试、静态前端构建与 macOS 打包流程；当前没有 Actions workflow，建议先接 PR/推送时的后端 mock 测试和静态前端构建，再按需接手动 macOS ARM64 打包。
+- 改了哪些文件：仅本交接记录；未新增 workflow、修改代码或触发发布。
+- 没做完 / 已知问题：本次仅评估，未执行构建/测试；云端打包仍需核实 runner 架构、依赖和资源下载，Apple 签名/公证需另行配置。
+- 下一个接手的人先看：README、docs/macos.md、server/requirements-dev.txt；实施 .github/workflows 前按根 AGENTS.md 追加跨目录决策。
+
+## 2026-10-21 Codex（接入 GitHub Actions CI）
+
+- 做了什么：按用户确认新增 CI，分支 push、PR 和手动触发两个并行 Ubuntu job：Python 3.12 的后端 mock/引擎桩测试，以及 Node.js 22 的前端静态生产构建；配置包下载缓存、只读权限、20 分钟超时与旧运行自动取消。
+- 改了哪些文件：`.github/workflows/ci.yml`、`docs/development.md`、`docs/superpowers/specs/2026-10-21-github-actions-design.md`、D-033、本文件；没有新增 API。
+- 验证：本机 Python 3.12.13 后端 63 项测试通过（1 项现有依赖弃用警告）；Node.js 22.23.3 / npm 10.9.9 下 npm ci 与静态生产构建通过；actionlint 1.7.12 与 git diff --check 通过。GitHub 仓库 Actions 已启用；云端结果待推送后追加。
+- 没做完 / 已知问题：本次没有 macOS 云端打包、签名、公证或发布，也未改分支保护。npm ci 报告现有依赖 9 项漏洞（2 moderate、6 high、1 critical），包含 Next.js 14.2.15 的升级提示；本次未扩大范围升级依赖。
+- 下一个接手的人先看：`.github/workflows/ci.yml` 和 docs/development.md 的 GitHub Actions 小节；默认分支仍为 agent/codex/translator-core，不直接改 main、不强推。
